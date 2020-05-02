@@ -1,10 +1,30 @@
-<html>
-    <head>
-        <title>Tareas</title>
-        <link rel="stylesheet" href="css/estilos.css">
-    </head>
-    <body>
-        <h1>Cambiar el color y tamaño de la fuente</h1>
-        
-    </body>
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Ejemplo - Aumentar y disminuir la fuente de nuestra web con javascript</title>
+    <meta charset="utf-8">
+    <script>
+        var fontSize = 1;
+        function zoomIn() {
+            fontSize += 0.1;
+            document.body.style.fontSize = fontSize + "em";
+        }
+        function zoomOut() {
+            fontSize -= 0.1;
+            document.body.style.fontSize = fontSize + "em";
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <button onclick="zoomIn()">Aumentar</button>
+        <button onclick="zoomOut()">Disminuir</button>
+    </header>
+    <div class="texto">
+        <h2>Este es el texto</h2>
+    </div>
+</body>
+
 </html>
