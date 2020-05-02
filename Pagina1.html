@@ -2,7 +2,7 @@
 <html lang="es">
 
 <head>
-    <title>Ejemplo - Aumentar y disminuir la fuente de nuestra web con javascript</title>
+    <title>Texto</title>
     <meta charset="utf-8">
     <script>
         var fontSize = 1;
@@ -14,17 +14,24 @@
             fontSize -= 0.1;
             document.body.style.fontSize = fontSize + "em";
         }
+        function changeColor() {
+            var color = document.getElementById("color").value;
+            document.getElementById("texto").style.color = color;
+        }
     </script>
+    <style>
+        
+    </style>
 </head>
 
 <body>
-    <header>
-        <button onclick="zoomIn()">Aumentar</button>
-        <button onclick="zoomOut()">Disminuir</button>
-    </header>
-    <div class="texto">
-        <h2>Este es el texto</h2>
+    <button onclick="zoomIn()">Aumentar</button>
+    <button onclick="zoomOut()">Disminuir</button>
+    <div id="texto">
+        <h2>Ejemplo - Aumentar y disminuir la fuente de nuestra web con javascript</h2>
     </div>
+    <input type="color" id="color" >
+    <button onclick="changeColor()">Cambiar Color</button>
 </body>
 
 </html>
