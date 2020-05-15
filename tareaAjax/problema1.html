@@ -25,19 +25,22 @@
         function loadDoc() {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
-                lista = new String("<form>");
+                list = new String("<form>");
                 if (this.readyState == 4 && this.status == 200) {
-                    
-                    document.getElementById("demo").innerHTML = lista;
+                    console.log(list);
                     var region = JSON.parse(this.responseText);
-                    console.log(region);
-                    for (i in region){
-                        lista += "<input type='checkbox' id='"+region[i].region+"' value='"+region[i].region+"'><label for='"+region[i].region+"'>"+region[i].region+"</label><br>"
-                    }
+                    console.log(list);
+                    regionList(region);
+                    document.getElementById("list").innerHTML = list;
                 }
             };
             xhttp.open("GET", "data.json", true);
             xhttp.send();
+        }
+        function regionList(region) {
+            for (i in region) {
+                list += "<input type='checkbox' id='" + region[i].region + "' value='" + region[i].region + "'><label for='" + region[i].region + "'>" + region[i].region + "</label><br></form>"
+            }
         }
     </script>
     <style>
@@ -46,17 +49,9 @@
 </head>
 
 <body>
-    <div id="demo">
-        
+    <div id="list">
     </div>
-    <form>
-        <input type="checkbox" id="amazonas" value="Amazonas" onclick="loadDoc()">
-        <label for="amazonas">Amazonas</label><br>
-        <input type="checkbox" id="ancash" value="Ancash">
-        <label for="ancash">Ancash</label><br>
-        <input type="checkbox" id="apurimac" value="Apurimac">
-        <label for="apurimac">Apurimac</label>
-    </form>
+    <button onclick="loadDoc()">Mostrar Regiones</button>
 </body>
 
 </html>
