@@ -7,6 +7,8 @@
     <canvas id="myChart"></canvas>
     <script src="chart.js"></script>
     <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart;
         var colors = [];
         var names = [];
         var dataa = [];
@@ -42,6 +44,10 @@
             document.getElementById("list").innerHTML = list;
         }
         function graph(json, name) {
+            if (chart) {
+                chart.clear();
+                chart.destroy();
+            }
             var data = JSON.parse(json);
             var colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
                 '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
@@ -62,23 +68,20 @@
                 for (i in data) {
                     if (data[i].region == name) {
                         var value = data[i].confirmed;
-                        cont = value[value.length-1].value;
-                        console.log(cont);
+                        cont = value[value.length - 1].value;
                     }
                 }
-                console.log(value);
                 dataa.push(cont);
             } else {
                 console.log(0);
             }
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var chart = new Chart(ctx, {
+            chart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     datasets: [{
+                        label: "Comparacion de casos Confirmados en cada Region",
                         data: dataa,
-                        backgroundColor: colors,
-                        label: 'Comparacion de navegadores'
+                        backgroundColor: colors
                     }],
                     labels: names
                 },
