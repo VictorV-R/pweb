@@ -22,7 +22,7 @@
             var region = JSON.parse(json);
             list = new String("");
             for (i in region) {
-                list += "<input type='checkbox' onclick='loadDoc('data.json', graph)' id='" + region[i].region + "' value='" + region[i].region + "'><label for='" + region[i].region + "'>" + region[i].region + "</label><br>";
+                list += "<input type='checkbox' onclick= \"loadDoc('data.json', graph)\" id='" + region[i].region + "'><label for='" + region[i].region + "'>" + region[i].region + "</label><br>";
             }
             document.getElementById("list").innerHTML = list;
         }
@@ -30,7 +30,7 @@
             var ctx = document.getElementById('myChart').getContext('2d');
             var dataa = [1];
             var colors = ['#000'];
-            var names = ['perra'];
+            var names = ['pera'];
             var chart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
@@ -50,7 +50,11 @@
 <body>
     <div id="list">
     </div>
-    <div id="test"></div>
+    <div id="test"><input type='checkbox' onclick="loadDoc('data.json', graph)">
+        <input type='checkbox' onclick="loadDoc('data.json', graph)">
+        <input type='checkbox' onclick="loadDoc('data.json', graph)">
+        <input type='checkbox' onclick="loadDoc('data.json', graph)">
+    </div>
 </body>
 
 </html>
