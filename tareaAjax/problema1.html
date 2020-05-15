@@ -19,14 +19,23 @@
             xhttp.send();
         }
         function regionList(json) {
+            var checkbox;
             var region = JSON.parse(json);
             list = new String("");
             for (i in region) {
-                list += "<input type='checkbox' onclick= \"loadDoc('data.json', graph)\" id='" + region[i].region + "'><label for='" + region[i].region + "'>" + region[i].region + "</label><br>";
+                var name = region[i].region;
+                list += "<input type='checkbox' onclick= \"loadDoc('data.json', graph)\" id='" + name + "'><label for='" + name + "'>" + name + "</label><br>";
             }
             document.getElementById("list").innerHTML = list;
         }
         function graph(json) {
+            var checkBox = document.getElementById(name.value);
+            if (checkBox.checked == true) {
+                console.log(1);
+            } else {
+                console.log(0);
+            }
+            var region = JSON.parse(json);
             var ctx = document.getElementById('myChart').getContext('2d');
             var dataa = [1];
             var colors = ['#000'];
@@ -49,11 +58,6 @@
 
 <body>
     <div id="list">
-    </div>
-    <div id="test"><input type='checkbox' onclick="loadDoc('data.json', graph)">
-        <input type='checkbox' onclick="loadDoc('data.json', graph)">
-        <input type='checkbox' onclick="loadDoc('data.json', graph)">
-        <input type='checkbox' onclick="loadDoc('data.json', graph)">
     </div>
 </body>
 
