@@ -7,51 +7,50 @@
     <canvas id="myChart"></canvas>
     <script src="chart.js"></script>
     <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                datasets: [{
-                    data: [60, 18, 10, 8, 4],
-                    backgroundColor: ['#42a5f5', 'red', 'green', 'blue', 'violet'],
-                    label: 'Comparacion de navegadores'
-                }],
-                labels: ['Google Chrome', 'Safari', 'Edge', 'Firefox', 'Opera']
-            },
-            options: { responsive: true }
-        });
-    </script>
-    <script>
-        function loadDoc() {
+        window.onload = loadDoc('data.json', regionList);
+        function loadDoc(url, cFunction) {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
-                list = new String("<form>");
                 if (this.readyState == 4 && this.status == 200) {
-                    console.log(list);
-                    var region = JSON.parse(this.responseText);
-                    console.log(list);
-                    regionList(region);
-                    document.getElementById("list").innerHTML = list;
+                    cFunction(this.responseText);
                 }
             };
-            xhttp.open("GET", "data.json", true);
+            xhttp.open("GET", url, true);
             xhttp.send();
         }
-        function regionList(region) {
+        function regionList(json) {
+            var region = JSON.parse(json);
+            list = new String("");
             for (i in region) {
-                list += "<input type='checkbox' id='" + region[i].region + "' value='" + region[i].region + "'><label for='" + region[i].region + "'>" + region[i].region + "</label><br></form>"
+                list += "<input type='checkbox' onclick='loadDoc('data.json', graph)' id='" + region[i].region + "' value='" + region[i].region + "'><label for='" + region[i].region + "'>" + region[i].region + "</label><br>";
             }
+            document.getElementById("list").innerHTML = list;
+        }
+        function graph(json) {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var dataa = [1];
+            var colors = ['#000'];
+            var names = ['perra'];
+            var chart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: dataa,
+                        backgroundColor: colors,
+                        label: 'Comparacion de navegadores'
+                    }],
+                    labels: names
+                },
+                options: { responsive: true }
+            });
         }
     </script>
-    <style>
-
-    </style>
 </head>
 
 <body>
     <div id="list">
     </div>
-    <button onclick="loadDoc()">Mostrar Regiones</button>
+    <div id="test"></div>
 </body>
 
 </html>
