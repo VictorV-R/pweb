@@ -73,19 +73,31 @@
                 }
                 dataa.push(cont);
             } else {
-                console.log(0);
+                for (i in names) {
+                    if (names[i] == name) {
+                        names.splice(i, 1);
+                        dataa.splice(i, 1);
+                        colors.splice(i, 1);
+                    }
+                }
             }
             chart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     datasets: [{
-                        label: "Comparacion de casos Confirmados en cada Region",
+                        label: "Comparacion",
                         data: dataa,
                         backgroundColor: colors
                     }],
                     labels: names
                 },
-                options: { responsive: true }
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Comparacion de casos Confirmados en cada Region'
+                    }
+                }
             });
         }
     </script>
