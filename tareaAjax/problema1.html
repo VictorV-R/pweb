@@ -7,6 +7,9 @@
     <canvas id="myChart"></canvas>
     <script src="chart.js"></script>
     <script>
+        var colors = [];
+        var names = [];
+        var dataa = [];
         window.onload = loadDoc('data.json', regionList);
         function loadDoc(url, cFunction) {
             var xhttp = new XMLHttpRequest();
@@ -18,28 +21,57 @@
             xhttp.open("GET", url, true);
             xhttp.send();
         }
+        function loadDoc(url, cFunction, name) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    cFunction(this.responseText, name);
+                }
+            };
+            xhttp.open("GET", url, true);
+            xhttp.send();
+        }
         function regionList(json) {
             var checkbox;
-            var region = JSON.parse(json);
+            var data = JSON.parse(json);
             list = new String("");
-            for (i in region) {
-                var name = region[i].region;
-                list += "<input type='checkbox' onclick= \"loadDoc('data.json', graph)\" id='" + name + "'><label for='" + name + "'>" + name + "</label><br>";
+            for (i in data) {
+                var name = data[i].region;
+                list += "<input type='checkbox' onclick= \"loadDoc('data.json', graph,'" + name + "')\" id='" + name + "'><label for='" + name + "'>" + name + "</label><br>";
             }
             document.getElementById("list").innerHTML = list;
         }
-        function graph(json) {
-            var checkBox = document.getElementById(name.value);
+        function graph(json, name) {
+            var data = JSON.parse(json);
+            var colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+                '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
+                '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
+                '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
+                '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
+                '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
+                '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680',
+                '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
+                '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3',
+                '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
+
+            var checkBox = document.getElementById(name);
+            var cont;
             if (checkBox.checked == true) {
-                console.log(1);
+                names.push(name);
+                colors.push(colorArray[Math.floor(Math.random() * (colorArray.length))]);
+                for (i in data) {
+                    if (data[i].region == name) {
+                        var value = data[i].confirmed;
+                        cont = value[value.length-1].value;
+                        console.log(cont);
+                    }
+                }
+                console.log(value);
+                dataa.push(cont);
             } else {
                 console.log(0);
             }
-            var region = JSON.parse(json);
             var ctx = document.getElementById('myChart').getContext('2d');
-            var dataa = [1];
-            var colors = ['#000'];
-            var names = ['pera'];
             var chart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
