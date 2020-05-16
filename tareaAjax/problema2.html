@@ -3,15 +3,30 @@
 
 <head>
   <title></title>
+</head>
+
+<body>
   <canvas id="myChart"></canvas>
+
+  <p id="list"><select name="dates" id="dates"></select></p>
   <script src="chart.js"></script>
   <script>
+    var colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
+      '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
+      '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
+      '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
+      '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
+      '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
+      '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680',
+      '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
+      '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3',
+      '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
     var ctx = document.getElementById('myChart').getContext('2d');
     var chart;
     var colors = [];
     var names = [];
     var dataa = [];
-    window.onload = loadDoc('data.json', regionList);
+    window.onload = loadDoc('data.json', handleData);
     function loadDoc(url, cFunction) {
       var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function () {
@@ -22,70 +37,43 @@
       xhttp.open("GET", url, true);
       xhttp.send();
     }
-    function loadDoc(url, cFunction, name) {
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-          cFunction(this.responseText, name);
-        }
-      };
-      xhttp.open("GET", url, true);
-      xhttp.send();
-    }
-    function regionList(json) {
-      var value;
-      var checkbox;
+    function handleData(json) {
+      colors = [];
+      names = [];
+      dataa = [];
+      var option = "<select id=\"dates\" onchange=\"loadDoc('data.json', handleData)\">";
       var data = JSON.parse(json);
-      list = new String("");
+      var day = changeDate();
+      console.log(day);
       for (i in data) {
         var name = data[i].region;
-        if (name !=  "Lima" && name != "Callao") {
-          list += "<input type='checkbox' onclick= \"loadDoc('data.json', graph,'" + name + "')\" id='" + name + "' checked><label for='" + name + "'>" + name + "</label><br>";
-          loadDoc('data.json', graph, name);
+        if (name != "Lima" && name != "Callao") {
+          names.push(name);
+          colors.push(colorArray[Math.floor(Math.random() * (colorArray.length))]);
+          var value = data[i].confirmed;
+          if (day == -1)
+            day = 0;
+          var cont = value[day].value;
+          dataa.push(cont);
         }
       }
-      document.getElementById("list").innerHTML = list;
+      for (i in data[0].confirmed)
+        option += "<option value=\"" + name + "\">" + value[i].date + "</option>";
+      option += "</select>";
+      document.getElementById("list").innerHTML = option;
+      toDraw();
     }
-    function graph(json, name) {
+    function changeDate() {
+      console.log(document.getElementById("dates").selectedIndex);
+      return document.getElementById("dates").selectedIndex;
+    }
+    function toDraw() {
       if (chart) {
         chart.clear();
         chart.destroy();
       }
-      var data = JSON.parse(json);
-      var colorArray = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6',
-        '#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D',
-        '#80B300', '#809900', '#E6B3B3', '#6680B3', '#66991A',
-        '#FF99E6', '#CCFF1A', '#FF1A66', '#E6331A', '#33FFCC',
-        '#66994D', '#B366CC', '#4D8000', '#B33300', '#CC80CC',
-        '#66664D', '#991AFF', '#E666FF', '#4DB3FF', '#1AB399',
-        '#E666B3', '#33991A', '#CC9999', '#B3B31A', '#00E680',
-        '#4D8066', '#809980', '#E6FF80', '#1AFF33', '#999933',
-        '#FF3380', '#CCCC00', '#66E64D', '#4D80CC', '#9900B3',
-        '#E64D66', '#4DB380', '#FF4D4D', '#99E6E6', '#6666FF'];
-
-      var checkBox = document.getElementById(name);
-      var cont;
-      if (checkBox.checked == true) {
-        names.push(name);
-        colors.push(colorArray[Math.floor(Math.random() * (colorArray.length))]);
-        for (i in data) {
-          if (data[i].region == name) {
-            var value = data[i].confirmed;
-            cont = value[value.length - 1].value;
-          }
-        }
-        dataa.push(cont);
-      } else {
-        for (i in names) {
-          if (names[i] == name) {
-            names.splice(i, 1);
-            dataa.splice(i, 1);
-            colors.splice(i, 1);
-          }
-        }
-      }
       chart = new Chart(ctx, {
-        type: 'doughnut',
+        type: 'bar',
         data: {
           datasets: [{
             label: "Comparacion",
@@ -104,11 +92,6 @@
       });
     }
   </script>
-</head>
-
-<body>
-  <div id="list">
-  </div>
 </body>
 
 </html>
